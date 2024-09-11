@@ -1,0 +1,56 @@
+"ConnectionStrings": {
+"dbcs": "Server=DESKTOP-1J7C4G8; Database=Empdb; Trusted__Connection=true; "
+},
+
+
+
+Scaffold-DbContext "Server=DESKTOP-1J7C4G8;Database=RkEnterprises;Trusted_Connection=true;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+
+
+
+Scaffold-dbContext "Server=DESKTOP-1J7C4G;Database=RkEnterprises; Trusted_Connection=true;"
+Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -force
+
+
+
+
+
+var Provider = builder.Services.BuildServiceProvider();
+var Config = Provider.GetRequiredService<IConfiguration>();
+builder.Services.AddDbContext<StudentDbContext>(item => item.UseSqlServer(Config.GetConnectionString("dbcs")));
+
+
+Scaffold-DbContext "Server=abc;Database=xyz;Trusted_Connection=true;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir
+
+
+
+add-migrattion  migoone
+ update-database
+
+
+
+
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+
+  "EmailSettings": {
+    "SMTPServer": "smtp.gmail.com",
+    "SMTPPort": 587,
+    "SenderEmail": "asifakhtar7488@gmail.com",
+    "SenderName": "ASIF"
+  },
+
+  "FileUpload": {
+    "Path": "uploads"
+  },
+  "ConnectionStrings": {
+    "dbcs": "Server=DESKTOP-1J7C4G8;Database=InnovationDb;Trusted_Connection=true;",
+    "dbcs2": "Server=DESKTOP-1J7C4G8;Database=UserDb;Trusted_Connection=true;"
+  },
+  "AllowedHosts": "*"
+}

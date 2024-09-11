@@ -1,0 +1,28 @@
+CREATE TRIGGER trg_AutoGenerateParameterCode
+ON ParameterMaster
+INSTEAD OF INSERT
+AS
+BEGIN
+    DECLARE @nextNumber INT;
+    DECLARE @newCode NVARCHAR(50);
+
+    -- Find the highest numeric part of the ParameterCode (assuming format 'pcode_x')
+    SELECT TOP 1 @nextNumber = CAST(SUBSTRING(ParameterCode, 7, LEN(ParameterCode) - 6) AS INT)
+    FROM ParameterMaster
+    WHERE ParameterCode LIKE 'pcode_%'
+    ORDER BY CAST(SUBSTRING(ParameterCode, 7, LEN(ParameterCode) - 6) AS INT) DESC;
+
+    -- If no existing code, start with 1
+    IF @nextNumber IS NULL
+        SET @nextNumber = 1;
+    ELSE
+        SET @nextNumber = @nextNumber + 1;
+
+    -- Generate the new ParameterCode
+    SET @newCode = 'pcode_' + CAST(@nextNumber AS NVARCHAR(10));
+
+    -- Insert the new record with generated ParameterCode
+    INSERT INTO ParameterMaster (ParameterCode, ParameterName, ParameterDesc, CreatedOn)
+    SELECT @newCode, i.ParameterName, i.ParameterDesc, GETDATE()
+    FROM inserted i;
+END;
